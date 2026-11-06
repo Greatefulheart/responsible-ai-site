@@ -25,6 +25,7 @@ a{color:#0B6B5C}a:hover{color:#084F44}
 <nav aria-label="Main" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; font-size: 15px; font-weight: 500">
 <a href="#what" style="color: #1B3358; text-decoration: none">What we review</a>
 <a href="#how" style="color: #1B3358; text-decoration: none">How it works</a>
+<a href="#quick-check" style="color: #1B3358; text-decoration: none">Free AI check</a>
 <a href="#pricing" style="color: #1B3358; text-decoration: none">Pricing</a>
 <a href="#faq" style="color: #1B3358; text-decoration: none">FAQ</a>
 <a href="#contact" style="background: #0B6B5C; color: #FFFFFF; text-decoration: none; padding: 11px 18px; border-radius: 8px; min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center">Book a free call</a>
@@ -149,6 +150,33 @@ a{color:#0B6B5C}a:hover{color:#084F44}
 <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="3.5" stroke="#0B6B5C" stroke-width="1.8"></circle><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2 .6 3 2.8 3 6" stroke="#0B6B5C" stroke-width="1.8" stroke-linecap="round"></path></svg>
 <h3 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 21px">Your team</h3>
 <p style="margin: 0; color: #3B4F56">Easy-to-follow AI guidelines for staff, so everyone knows what's okay and what to avoid.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section id="quick-check" aria-labelledby="qc-h" style="background: #1B3358; color: #F2F6F5">
+<div style="max-width: 1200px; margin: 0 auto; padding: 96px 24px; display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start">
+<div style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<p style="margin: 0; font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #9FD8CB">Free AI risk quick-check</p>
+<h2 id="qc-h" style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 3.4vw, 2.5rem); line-height: 1.15; letter-spacing: -0.015em">How safely is your business using AI? Find out in a minute.</h2>
+<p style="margin: 0; font-size: 18px; color: #C9D6D3">Describe in a few sentences how you and your team use AI tools today. Our AI assistant will show which of the six review areas look fine and which may need attention.</p>
+<p style="margin: 0; font-size: 15px; color: #C9D6D3">Please don't include names, customer details or passwords. Your description is used only to create your results and isn't saved. This is a quick automated check, not a full review or legal advice.</p>
+</div>
+<div style="flex: 1 1 480px; min-width: 0; background: #FFFFFF; color: #1B3358; border-radius: 16px; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+<form id="qc-form" style="display: flex; flex-direction: column; gap: 12px">
+<label for="qc-text" style="font-weight: 600; font-size: 15px">How does your business use AI?</label>
+<textarea id="qc-text" rows="5" maxlength="2000" required placeholder="Example: Our office staff use ChatGPT to write customer emails and social posts. Sometimes we paste in client questions to get answers faster. We don't have any written rules yet." style="font: inherit; font-size: 16px; padding: 12px 14px; border: 1.5px solid #9AAAA6; border-radius: 8px; resize: vertical; color: #1B3358"></textarea>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+<span id="qc-count" style="font-size: 13px; color: #4A5D63">0 / 2000</span>
+<button id="qc-btn" type="submit" style="font: inherit; font-weight: 600; background: #0B6B5C; color: #FFFFFF; border: 0; border-radius: 8px; padding: 14px 22px; min-height: 48px; cursor: pointer">Check my AI use</button>
+</div>
+</form>
+<p id="qc-status" role="status" aria-live="polite" style="margin: 0; font-size: 15px; color: #4A5D63"></p>
+<div id="qc-results" style="display: none; flex-direction: column; gap: 14px">
+<p id="qc-summary" style="margin: 0; font-size: 16px; line-height: 1.55"></p>
+<ul id="qc-list" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px"></ul>
+<a href="#contact" style="background: #0B6B5C; color: #FFFFFF; text-decoration: none; padding: 14px 20px; border-radius: 8px; font-weight: 600; text-align: center; min-height: 48px; box-sizing: border-box">Talk through my results — book a free call</a>
 </div>
 </div>
 </div>
@@ -283,5 +311,70 @@ a{color:#0B6B5C}a:hover{color:#084F44}
 </footer>
 
 </div>
+<script>
+(function () {
+  var form = document.getElementById('qc-form');
+  var text = document.getElementById('qc-text');
+  var count = document.getElementById('qc-count');
+  var btn = document.getElementById('qc-btn');
+  var statusEl = document.getElementById('qc-status');
+  var results = document.getElementById('qc-results');
+  var summary = document.getElementById('qc-summary');
+  var list = document.getElementById('qc-list');
+  var LABELS = {
+    attention: { text: 'Needs attention', bg: '#FDF1E3', fg: '#8A4B00' },
+    ok: { text: 'Looks good', bg: '#E3F2EE', fg: '#0B6B5C' },
+    unknown: { text: 'Not enough info', bg: '#EEF1F5', fg: '#3E4C63' }
+  };
+  text.addEventListener('input', function () { count.textContent = text.value.length + ' / 2000'; });
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var value = text.value.trim();
+    if (value.length < 20) { statusEl.textContent = 'Please write at least a sentence or two.'; return; }
+    btn.disabled = true; btn.textContent = 'Checking…';
+    statusEl.textContent = 'Reviewing your description — this takes a few seconds.';
+    results.style.display = 'none';
+    try {
+      var res = await fetch('/api/risk-check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ description: value })
+      });
+      var data = await res.json().catch(function () { return {}; });
+      if (res.status === 429) throw new Error('Too many checks in a short time. Please wait a minute and try again.');
+      if (!res.ok || data.error) throw new Error(data.error || 'Something went wrong. Please try again.');
+      summary.textContent = data.summary || '';
+      list.textContent = '';
+      var needs = 0;
+      (data.areas || []).forEach(function (a) {
+        var l = LABELS[a.status] || LABELS.unknown;
+        if (a.status === 'attention') needs++;
+        var li = document.createElement('li');
+        li.style.cssText = 'border: 1px solid #DDE4E2; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px';
+        var top = document.createElement('div');
+        top.style.cssText = 'display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px';
+        var name = document.createElement('strong');
+        name.textContent = a.name;
+        name.style.fontSize = '16px';
+        var badge = document.createElement('span');
+        badge.textContent = l.text;
+        badge.style.cssText = 'font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background:' + l.bg + '; color:' + l.fg;
+        top.appendChild(name); top.appendChild(badge);
+        var note = document.createElement('p');
+        note.textContent = a.note;
+        note.style.cssText = 'margin: 0; font-size: 15px; color: #3B4F56';
+        li.appendChild(top); li.appendChild(note);
+        list.appendChild(li);
+      });
+      statusEl.textContent = needs ? needs + ' of 6 areas may need attention.' : 'Here are your results.';
+      results.style.display = 'flex';
+    } catch (err) {
+      statusEl.textContent = err.message;
+    } finally {
+      btn.disabled = false; btn.textContent = 'Check my AI use';
+    }
+  });
+})();
+</script>
 </body>
 </html>

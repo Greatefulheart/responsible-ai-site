@@ -2,7 +2,8 @@
 
 Landing page for the Responsible AI Review Assistant: plain-language responsible AI reviews for small and mid-size businesses in the U.S. and U.S. territories.
 
-- `index.html` — the full landing page (no build step)
+- `public/index.html` — the full landing page
+- `netlify/functions/risk-check.mts` — the AI risk quick-check (Netlify Function at `/api/risk-check`, using Claude through Netlify AI Gateway — no API key needed; rate-limited to 5 checks per minute per visitor)
 - `netlify.toml` — Netlify deploy settings
 - The contact form uses Netlify Forms; submissions appear in the Netlify dashboard under **Forms**.
 
